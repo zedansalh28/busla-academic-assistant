@@ -1,0 +1,339 @@
+{
+  "content": [
+    {
+      "id": "study_tips_001",
+      "category": "study_tips",
+      "title": "Active Recall for Engineering Exams",
+      "description": "After studying a topic, close the book and write everything you remember — formulas, theorems, steps. This is the single most effective method for engineering exams where you must recall from memory under pressure.",
+      "difficulty": "beginner",
+      "tags": ["memory", "exam", "technique", "engineering"]
+    },
+    {
+      "id": "study_tips_002",
+      "category": "study_tips",
+      "title": "Spaced Repetition for Formulas",
+      "description": "Review formulas and derivations at increasing intervals: 1 day, 3 days, 1 week, 2 weeks. Essential for mathematics-heavy courses like Calculus, Linear Algebra, and Circuit Analysis.",
+      "difficulty": "intermediate",
+      "tags": ["formulas", "retention", "mathematics", "spaced"]
+    },
+    {
+      "id": "study_tips_003",
+      "category": "study_tips",
+      "title": "Pomodoro for Coding and Problem Sets",
+      "description": "Study 25 minutes, break 5 minutes. After 4 cycles take a 20-minute break. Especially effective for programming assignments and long math problem sets where focus deteriorates quickly.",
+      "difficulty": "beginner",
+      "tags": ["productivity", "focus", "coding", "time-management"]
+    },
+    {
+      "id": "study_tips_004",
+      "category": "study_tips",
+      "title": "Feynman Technique for Theory Courses",
+      "description": "Explain a theorem or algorithm as if teaching it to someone with no background. If you cannot explain it simply, you do not understand it. Works especially well for OOP concepts, data structures, and circuit theorems.",
+      "difficulty": "intermediate",
+      "tags": ["comprehension", "algorithms", "theory", "oop"]
+    },
+    {
+      "id": "study_tips_005",
+      "category": "study_tips",
+      "title": "Solve Past Exams — The Most Effective SCE Strategy",
+      "description": "Past exam papers are the best study tool at SCE. They reveal recurring question types, the expected solution format, and which topics carry the most weight. Start solving past exams at least 2 weeks before the test.",
+      "difficulty": "beginner",
+      "tags": ["exams", "past-papers", "sce", "strategy"]
+    },
+    {
+      "id": "study_tips_006",
+      "category": "study_tips",
+      "title": "Engineering Problem-Solving Framework",
+      "description": "For any engineering problem: (1) Read carefully and identify what is given and what is asked. (2) Draw a diagram. (3) Identify the relevant law or formula. (4) Substitute values. (5) Check units and reasonableness of the answer.",
+      "difficulty": "beginner",
+      "tags": ["problem-solving", "engineering", "method", "exams"]
+    },
+    {
+      "id": "study_tips_007",
+      "category": "study_tips",
+      "title": "Group Study for Lab Reports and Projects",
+      "description": "Form study groups of 3-4 students for lab discussions and project work. Divide topics for initial research, then teach each other. This cuts preparation time and improves understanding through discussion.",
+      "difficulty": "beginner",
+      "tags": ["group-study", "lab", "project", "collaboration"]
+    },
+    {
+      "id": "academic_rules_001",
+      "category": "academic_rules",
+      "title": "Academic Integrity at SCE",
+      "description": "Submitting copied code, sharing exam answers, or plagiarizing lab reports are serious violations at SCE. Each case goes to a disciplinary committee. Always submit your own work and cite sources.",
+      "tags": ["integrity", "sce", "policy", "ethics"]
+    },
+    {
+      "id": "academic_rules_002",
+      "category": "academic_rules",
+      "title": "Attendance Requirements",
+      "description": "SCE requires a minimum attendance percentage (typically 80%) in most courses. Falling below this threshold can disqualify you from sitting the final exam regardless of your grade. Track your absences carefully.",
+      "tags": ["attendance", "sce", "policy", "exam-eligibility"]
+    },
+    {
+      "id": "academic_rules_003",
+      "category": "academic_rules",
+      "title": "Moed Bet — Second Exam Opportunity",
+      "description": "If you fail or miss a final exam, you may be eligible to take a Moed Bet (second sitting). Eligibility depends on your attendance and final grade. Check with your department coordinator for the specific rules.",
+      "tags": ["moed-bet", "retake", "exam", "sce", "second-chance"]
+    },
+    {
+      "id": "academic_rules_004",
+      "category": "academic_rules",
+      "title": "Lab Safety and Submission Rules",
+      "description": "Lab reports must be submitted within the deadline — late submissions are penalized or rejected. Always follow lab safety protocols, especially in electronics and mechanical labs. Missing a lab requires advance coordination with the lecturer.",
+      "tags": ["lab", "submission", "safety", "deadline"]
+    },
+    {
+      "id": "academic_rules_005",
+      "category": "academic_rules",
+      "title": "Prerequisite Courses",
+      "description": "Many SCE courses have prerequisites that must be passed before enrollment. For example, Calculus 1 before Calculus 2, Data Structures before Algorithms. Failing to meet prerequisites may block your course registration.",
+      "tags": ["prerequisites", "registration", "planning", "sce"]
+    },
+    {
+      "id": "course_patterns_001",
+      "category": "course_patterns",
+      "major": "Software Engineering",
+      "year": "1st",
+      "title": "Software Engineering — First Year Courses",
+      "description": "Calculus 1, Linear Algebra, Discrete Mathematics, Introduction to Programming (Python/C), Physics 1, Academic English. The biggest challenge is Calculus 1. Allocate at least 10 hours per week to math.",
+      "difficulty": "beginner",
+      "tags": ["software", "first-year", "curriculum", "calculus", "programming"]
+    },
+    {
+      "id": "course_patterns_002",
+      "category": "course_patterns",
+      "major": "Software Engineering",
+      "year": "2nd",
+      "title": "Software Engineering — Second Year Courses",
+      "description": "Data Structures, Algorithms, OOP (Java/C++), Databases, Operating Systems basics, Calculus 2. Data Structures and Algorithms are the hardest — solve at least 3 problems per day on paper or LeetCode.",
+      "difficulty": "intermediate",
+      "tags": ["software", "second-year", "data-structures", "algorithms", "oop"]
+    },
+    {
+      "id": "course_patterns_003",
+      "category": "course_patterns",
+      "major": "Software Engineering",
+      "year": "3rd",
+      "title": "Software Engineering — Third Year Courses",
+      "description": "Software Engineering methodologies, Web Development, Networks, Operating Systems, AI fundamentals, Statistics. Heavy project workload — time management is critical.",
+      "difficulty": "intermediate",
+      "tags": ["software", "third-year", "web", "networks", "ai"]
+    },
+    {
+      "id": "course_patterns_004",
+      "category": "course_patterns",
+      "major": "Software Engineering",
+      "year": "4th",
+      "title": "Software Engineering — Final Year and Capstone Project",
+      "description": "Final Project (two semesters), advanced electives, seminars. The Final Project is the most demanding — start early, define a clear scope, use version control from day one, and meet your supervisor weekly.",
+      "difficulty": "advanced",
+      "tags": ["software", "fourth-year", "final-project", "capstone"]
+    },
+    {
+      "id": "course_patterns_005",
+      "category": "course_patterns",
+      "major": "Electrical and Electronics Engineering",
+      "year": "1st",
+      "title": "Electrical Engineering — First Year Courses",
+      "description": "Calculus 1, Physics 1 (mechanics), Linear Algebra, Introduction to Electrical Engineering, Digital Systems. Physics and Calculus are the two pillars — understanding both deeply is essential for circuit courses.",
+      "difficulty": "beginner",
+      "tags": ["electrical", "first-year", "physics", "digital-systems"]
+    },
+    {
+      "id": "course_patterns_006",
+      "category": "course_patterns",
+      "major": "Electrical and Electronics Engineering",
+      "year": "2nd",
+      "title": "Electrical Engineering — Second Year Courses",
+      "description": "Circuit Analysis, Electronics 1, Signals and Systems, Physics 2 (electromagnetism), Calculus 2. Circuit Analysis is the core — master KVL, KCL, Thevenin, Norton before moving forward.",
+      "difficulty": "intermediate",
+      "tags": ["electrical", "second-year", "circuits", "signals", "electronics"]
+    },
+    {
+      "id": "course_patterns_007",
+      "category": "course_patterns",
+      "major": "Electrical and Electronics Engineering",
+      "year": "3rd",
+      "title": "Electrical Engineering — Third Year Courses",
+      "description": "Control Systems, Embedded Systems, Communication Systems, Electronics 2, Electromagnetic Fields. Labs become intensive — prepare pre-lab reports and review theory before each session.",
+      "difficulty": "intermediate",
+      "tags": ["electrical", "third-year", "control", "embedded", "communications"]
+    },
+    {
+      "id": "course_patterns_008",
+      "category": "course_patterns",
+      "major": "Industrial Engineering & Management",
+      "year": "1st",
+      "title": "Industrial Engineering — First Year Courses",
+      "description": "Calculus 1, Physics 1, Statistics 1, Introduction to Industrial Engineering, Introduction to Programming. Statistics is the backbone of IE — invest time in understanding probability from the start.",
+      "difficulty": "beginner",
+      "tags": ["industrial", "first-year", "statistics", "programming"]
+    },
+    {
+      "id": "course_patterns_009",
+      "category": "course_patterns",
+      "major": "Industrial Engineering & Management",
+      "year": "2nd",
+      "title": "Industrial Engineering — Second Year Courses",
+      "description": "Operations Research, Information Systems, Statistics 2, Quality Management, Human Factors. Operations Research involves optimization — practice LP problems daily.",
+      "difficulty": "intermediate",
+      "tags": ["industrial", "second-year", "operations-research", "quality"]
+    },
+    {
+      "id": "course_patterns_010",
+      "category": "course_patterns",
+      "major": "Civil Engineering",
+      "year": "1st",
+      "title": "Civil Engineering — First Year Courses",
+      "description": "Calculus 1, Physics 1, Engineering Mechanics (Statics), Engineering Drawing, Introduction to Civil Engineering. Statics is the foundation of all structural courses — master free-body diagrams and equilibrium equations.",
+      "difficulty": "beginner",
+      "tags": ["civil", "first-year", "statics", "mechanics"]
+    },
+    {
+      "id": "course_patterns_011",
+      "category": "course_patterns",
+      "major": "Civil Engineering",
+      "year": "2nd",
+      "title": "Civil Engineering — Second Year Courses",
+      "description": "Strength of Materials, Structural Analysis, Fluid Mechanics, Soil Mechanics, Calculus 2. Strength of Materials builds directly on Statics — if you struggled with Statics, review it before starting.",
+      "difficulty": "intermediate",
+      "tags": ["civil", "second-year", "structures", "fluids", "soil"]
+    },
+    {
+      "id": "course_patterns_012",
+      "category": "course_patterns",
+      "major": "Mechanical Engineering",
+      "year": "1st",
+      "title": "Mechanical Engineering — First Year Courses",
+      "description": "Calculus 1, Physics 1, Statics, Engineering Drawing, Materials Science basics. Statics and Physics 1 together form the foundation — pay special attention to vectors and Newton's laws.",
+      "difficulty": "beginner",
+      "tags": ["mechanical", "first-year", "statics", "materials"]
+    },
+    {
+      "id": "course_patterns_013",
+      "category": "course_patterns",
+      "major": "Mechanical Engineering",
+      "year": "2nd",
+      "title": "Mechanical Engineering — Second Year Courses",
+      "description": "Dynamics, Thermodynamics, Fluid Mechanics, Strength of Materials, Calculus 2. Thermodynamics is conceptually challenging — build physical intuition by connecting every equation to a real-world scenario.",
+      "difficulty": "intermediate",
+      "tags": ["mechanical", "second-year", "thermodynamics", "dynamics", "fluids"]
+    },
+    {
+      "id": "course_patterns_014",
+      "category": "course_patterns",
+      "major": "Preparatory Program",
+      "year": "Preparatory",
+      "title": "Preparatory Program — What to Expect",
+      "description": "Preparatory Mathematics, Preparatory Physics, Academic English, Computer Basics. The goal is to close gaps and build the foundation for engineering studies. Take it seriously — students who struggle in Prep often struggle in Year 1.",
+      "difficulty": "beginner",
+      "tags": ["preparatory", "foundation", "mathematics", "physics"]
+    },
+    {
+      "id": "exam_prep_001",
+      "category": "exam_preparation",
+      "title": "SCE Exam Preparation — 3-Week Plan",
+      "description": "Week 1: Review lecture notes and summarize each topic in your own words. Week 2: Solve textbook exercises and past exams. Week 3: Focus on weak areas, re-do wrong answers, simulate exam conditions. Do not start studying 2 days before the exam.",
+      "difficulty": "intermediate",
+      "tags": ["exams", "plan", "preparation", "sce"]
+    },
+    {
+      "id": "exam_prep_002",
+      "category": "exam_preparation",
+      "title": "Mathematics Exam Strategy",
+      "description": "In math exams (Calculus, Linear Algebra, Discrete Math), allocate time per question based on marks. Show all steps — partial credit is usually given. If stuck, move on and return. Never leave a question blank — write the formula at least.",
+      "difficulty": "intermediate",
+      "tags": ["math", "calculus", "linear-algebra", "exam-strategy"]
+    },
+    {
+      "id": "exam_prep_003",
+      "category": "exam_preparation",
+      "title": "Programming Exam Strategy",
+      "description": "For coding exams, read all questions first and start with the one you are most confident about. Write pseudocode before actual code. Even if you cannot complete the code, comments explaining your logic earn partial credit.",
+      "difficulty": "intermediate",
+      "tags": ["programming", "coding-exam", "pseudocode", "strategy"]
+    },
+    {
+      "id": "exam_prep_004",
+      "category": "exam_preparation",
+      "title": "Lab Practical Exam Tips",
+      "description": "For lab practicals (circuits, programming labs), review the lab procedures beforehand. Know how to use the tools (oscilloscope, multimeter, IDE). Practice building the circuit or writing the code from memory before the exam.",
+      "difficulty": "intermediate",
+      "tags": ["lab", "practical", "circuits", "oscilloscope"]
+    },
+    {
+      "id": "exam_prep_005",
+      "category": "exam_preparation",
+      "title": "Managing Multiple Exams in the Same Week",
+      "description": "SCE exam periods can be brutal with multiple exams in one week. Create a priority list by exam weight and difficulty. Spend the most time on the hardest or highest-weight exam. Get 7-8 hours of sleep — sleep deprivation destroys exam performance.",
+      "difficulty": "intermediate",
+      "tags": ["multiple-exams", "stress", "time-management", "priority"]
+    },
+    {
+      "id": "project_tips_001",
+      "category": "project_tips",
+      "title": "Final Project — How to Start",
+      "description": "Start by writing a one-page problem statement: what problem are you solving, who benefits, and what your solution will do. This clarifies scope and prevents feature creep. Have your supervisor approve it before writing a single line of code.",
+      "difficulty": "advanced",
+      "tags": ["final-project", "scope", "problem-statement", "supervisor"]
+    },
+    {
+      "id": "project_tips_002",
+      "category": "project_tips",
+      "title": "Git and Version Control for Final Projects",
+      "description": "Use Git from day one. Commit with meaningful messages, use branches for features, and never work directly on main. Host on GitHub or GitLab. This is both a professional habit and a safety net when things break.",
+      "difficulty": "intermediate",
+      "tags": ["git", "version-control", "final-project", "github"]
+    },
+    {
+      "id": "project_tips_003",
+      "category": "project_tips",
+      "title": "Team Division of Work in Group Projects",
+      "description": "Divide work by component (frontend, backend, database, testing) not by tasks. Each person owns a full layer. Define clear API contracts between components before coding. Use a shared document to track what each person is building.",
+      "difficulty": "intermediate",
+      "tags": ["teamwork", "group-project", "division-of-work", "api"]
+    },
+    {
+      "id": "time_mgmt_001",
+      "category": "time_management",
+      "title": "Managing the Engineering Semester",
+      "description": "Engineering semesters are front-loaded with theory and back-loaded with projects and exams. Plan your full semester at the start: mark every deadline, lab, and exam. Week 1 calm is not an excuse to delay — use it to get ahead.",
+      "difficulty": "beginner",
+      "tags": ["semester", "planning", "engineering", "deadlines"]
+    },
+    {
+      "id": "time_mgmt_002",
+      "category": "time_management",
+      "title": "Balancing Labs, Assignments, and Theory",
+      "description": "Engineering students typically have 4-6 courses plus weekly labs. Assign fixed study blocks for each course each week. Labs require pre-preparation the day before and report writing the day after — plan for these hidden time costs.",
+      "difficulty": "intermediate",
+      "tags": ["labs", "assignments", "balance", "weekly-schedule"]
+    },
+    {
+      "id": "time_mgmt_003",
+      "category": "time_management",
+      "title": "Priority Matrix for Engineering Students",
+      "description": "Categorize tasks: Urgent+Important (due tomorrow), Important+Not Urgent (next week's exam), Urgent+Not Important (admin tasks). Engineering students often spend too much time on urgent-but-not-important tasks. Guard your deep study time.",
+      "difficulty": "intermediate",
+      "tags": ["priority", "urgent", "important", "planning"]
+    },
+    {
+      "id": "wellbeing_001",
+      "category": "wellbeing",
+      "title": "Engineering Burnout — Early Warning Signs",
+      "description": "Signs include skipping lectures consistently, losing motivation to open a textbook, feeling that nothing matters, or physical exhaustion. If you recognize these, talk to a study advisor or counselor at SCE. Early intervention prevents dropping courses.",
+      "difficulty": "beginner",
+      "tags": ["burnout", "mental-health", "wellbeing", "sce-support"]
+    },
+    {
+      "id": "wellbeing_002",
+      "category": "wellbeing",
+      "title": "Dealing with Failing a Course",
+      "description": "Failing a course at SCE is recoverable. You can retake it (check your department's repeat policy). Identify why you failed: attendance, exam anxiety, weak foundation, or poor time management — then fix the root cause before retaking.",
+      "difficulty": "beginner",
+      "tags": ["failing", "retake", "recovery", "course-repeat"]
+    }
+  ]
+}
