@@ -1,5 +1,12 @@
 const express = require('express');
 const db = require('../db/queries');
+const rawDb = require('../db/connection');
+const { v4: uuidv4 } = require('uuid');
+const memoryEngine = require('../services/memoryEngine');
+const patternEngine = require('../services/patternEngine');
+const adaptiveEngine = require('../services/adaptiveEngine');
+const predictionEngine = require('../services/predictionEngine');
+const interventionEngine = require('../services/interventionEngine');
 
 const router = express.Router();
 
@@ -330,6 +337,11 @@ router.post('/load/:index', (req, res) => {
       db.addMessage(sessionId, 'assistant', conversation.assistant);
     }
 
+    // Seed intelligence data in background (fire-and-forget, non-blocking)
+    setImmediate(() => {
+      try { _seedIntelligence(userId); } catch (_) {}
+    });
+
     res.json({
       success: true,
       userId,
@@ -342,5 +354,133 @@ router.post('/load/:index', (req, res) => {
     res.status(500).json({ error: 'Failed to load demo profile' });
   }
 });
+
+// POST /api/demo/seed/:userId — seed full intelligence data into existing user
+router.post('/seed/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const exists = rawDb.prepare('SELECT id FROM users WHERE id = ?').get(userId);
+    if (!exists) return res.status(404).json({ error: 'User not found' });
+    _seedIntelligence(userId);
+    res.json({ success: true, message: 'Intelligence data seeded', userId });
+  } catch (error) {
+    console.error('Seed error:', error);
+    res.status(500).json({ error: 'Failed to seed intelligence data' });
+  }
+});
+
+// ── Intelligence seeder ────────────────────────────────────────────────────────
+
+function _seedIntelligence(userId) {
+  const now = Date.now();
+  const DAY = 86400000;
+  const daysAgo = (d) => now - d * DAY;
+
+  // Study plans
+  const plan1 = db.createStudyPlan(userId, { title: 'Calculus 2 — Final Exam Prep', subject: 'Calculus 2', deadline: daysAgo(-7) });
+  rawDb.prepare('UPDATE study_plans SET progress=? WHERE id=?').run(65, plan1.id);
+  const plan2 = db.createStudyPlan(userId, { title: 'Data Structures Midterm', subject: 'Data Structures', deadline: daysAgo(-3) });
+  rawDb.prepare('UPDATE study_plans SET progress=? WHERE id=?').run(30, plan2.id);
+  const plan3 = db.createStudyPlan(userId, { title: 'Linear Algebra — Recovery Plan', subject: 'Linear Algebra', deadline: daysAgo(2) });
+  rawDb.prepare('UPDATE study_plans SET progress=? WHERE id=?').run(10, plan3.id);
+
+  // Tasks for plan 1
+  for (const t of [
+    { title: 'Review integration techniques', status: 'completed', due: daysAgo(5) },
+    { title: 'Practice series convergence tests', status: 'completed', due: daysAgo(3) },
+    { title: 'Fourier Series introduction', status: 'in-progress', due: daysAgo(-2) },
+    { title: 'Complete past exam paper 2023', status: 'pending', due: daysAgo(-4) },
+  ]) rawDb.prepare('INSERT INTO study_tasks (id, plan_id, title, status, due_date, created_at, updated_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), plan1.id, t.title, t.status, t.due, now, now);
+
+  // Tasks for plan 2
+  for (const t of [
+    { title: 'Binary trees — insertion and traversal', status: 'completed', due: daysAgo(2) },
+    { title: 'Hash tables and collision resolution', status: 'in-progress', due: daysAgo(-1) },
+    { title: 'Dynamic programming intro', status: 'pending', due: daysAgo(-5) },
+  ]) rawDb.prepare('INSERT INTO study_tasks (id, plan_id, title, status, due_date, created_at, updated_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), plan2.id, t.title, t.status, t.due, now, now);
+
+  // Tasks for plan 3
+  for (const t of [
+    { title: 'Matrix multiplication fundamentals', status: 'in-progress', due: daysAgo(-1) },
+    { title: 'Eigenvalues and eigenvectors', status: 'pending', due: daysAgo(-4) },
+  ]) rawDb.prepare('INSERT INTO study_tasks (id, plan_id, title, status, due_date, created_at, updated_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), plan3.id, t.title, t.status, t.due, now, now);
+
+  // Behavior events
+  const evts = [
+    ['chat_message','Calculus 2',1],['chat_message','Calculus 2',3],['chat_message','Calculus 2',5],
+    ['chat_message','Programming',2],['chat_message','Programming',4],['chat_message','Programming',6],
+    ['chat_message','Linear Algebra',1],['chat_message','Linear Algebra',2],['chat_message','Linear Algebra',3],
+    ['chat_message','Data Structures',2],['chat_message','Data Structures',7],
+    ['page_view',null,0],['page_view',null,1],['page_view',null,2],
+    ['task_created','Calculus 2',4],['task_created','Calculus 2',6],['task_created','Data Structures',3],
+    ['task_completed','Calculus 2',2],['task_completed','Calculus 2',5],
+  ];
+  for (const [type, subj, d] of evts) {
+    rawDb.prepare('INSERT INTO behavior_events (id,user_id,event_type,subject,metadata_json,session_hour,created_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), userId, type, subj, '{}', 14 + (d % 9), daysAgo(d) + Math.floor(Math.random() * 3600000));
+  }
+  // Late-night sessions (burnout signal)
+  for (let i = 0; i < 4; i++) rawDb.prepare('INSERT INTO behavior_events (id,user_id,event_type,subject,metadata_json,session_hour,created_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), userId, 'chat_message', 'Calculus 2', '{}', 23, daysAgo(i + 1));
+
+  // Weak topics
+  const weakTopicData = [['Eigenvalues','Linear Algebra',3],['Dynamic Programming','Programming',4],['Fourier Series','Calculus 2',2]];
+  for (const [topic, course, count] of weakTopicData) for (let i = 0; i < count; i++) db.upsertWeakTopic(userId, topic, course);
+
+  // Learning memory
+  const concepts = [
+    { concept:'OOP', subject:'Programming', mastery:78, confidence:80, struggles:0, days:2 },
+    { concept:'Recursion', subject:'Programming', mastery:68, confidence:65, struggles:1, days:4 },
+    { concept:'Derivatives', subject:'Calculus', mastery:71, confidence:68, struggles:0, days:3 },
+    { concept:'SQL Basics', subject:'Databases', mastery:70, confidence:75, struggles:0, days:5 },
+    { concept:'Integrals', subject:'Calculus', mastery:55, confidence:50, struggles:2, days:7 },
+    { concept:'Data Structures', subject:'Programming', mastery:53, confidence:55, struggles:1, days:3 },
+    { concept:'Sorting Algorithms', subject:'Programming', mastery:58, confidence:52, struggles:2, days:8 },
+    { concept:'Linear Algebra', subject:'Mathematics', mastery:34, confidence:28, struggles:5, days:1 },
+    { concept:'Differential Equations', subject:'Mathematics', mastery:27, confidence:22, struggles:6, days:2 },
+    { concept:'Dynamic Programming', subject:'Programming', mastery:32, confidence:25, struggles:7, days:1 },
+    { concept:'Series & Sequences', subject:'Calculus', mastery:38, confidence:35, struggles:4, days:2 },
+    // Forgetting (old timestamps)
+    { concept:'Graph Algorithms', subject:'Programming', mastery:60, confidence:55, struggles:1, days:22 },
+    { concept:'Pointers', subject:'Programming', mastery:64, confidence:60, struggles:0, days:18 },
+    { concept:'Limits', subject:'Calculus', mastery:65, confidence:62, struggles:0, days:25 },
+  ];
+  for (const c of concepts) {
+    const lastInteraction = daysAgo(c.days);
+    const retention = Math.round(memoryEngine.computeRetention(c.mastery, lastInteraction));
+    rawDb.prepare(`INSERT OR REPLACE INTO learning_memory (id,user_id,concept,subject,mastery_score,confidence_score,retention_score,struggle_count,revision_count,interaction_count,last_interaction,first_seen,explanation_type_preferred) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(uuidv4(), userId, c.concept, c.subject, c.mastery, c.confidence, retention, c.struggles, 3, 5, lastInteraction, daysAgo(c.days + 20), 'example_based');
+  }
+
+  // Knowledge gaps
+  for (const [w, p, s, sev] of [
+    ['Dynamic Programming','Recursion','Programming',75],
+    ['Differential Equations','Integrals','Mathematics',68],
+    ['Graph Algorithms','Data Structures','Programming',45],
+  ]) rawDb.prepare('INSERT OR IGNORE INTO knowledge_gaps (id,user_id,weak_concept,missing_prerequisite,subject,gap_severity,is_resolved,detected_at) VALUES (?,?,?,?,?,?,0,?)').run(uuidv4(), userId, w, p, s, sev, daysAgo(3));
+
+  // Explanation effectiveness
+  for (const [type, succ, fail] of [['example_based',8,2],['step_by_step',5,3],['theoretical',2,4]]) {
+    rawDb.prepare('INSERT OR REPLACE INTO explanation_effectiveness (id,user_id,explanation_type,success_count,fail_count,effectiveness_score,last_updated) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), userId, type, succ, fail, Math.round((succ/(succ+fail))*100), now);
+  }
+
+  // Memory snapshots (6-week history)
+  for (const [d, mastery, cnt] of [[14,38,8],[10,40,10],[7,43,12],[5,47,14],[3,50,15],[1,53,14]]) {
+    rawDb.prepare('INSERT OR REPLACE INTO memory_snapshots (id,user_id,snapshot_date,overall_mastery,concept_count,improving_count,declining_count,forgetting_count,snapshot_json,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)').run(uuidv4(), userId, daysAgo(d), mastery, cnt, 3, 2, Math.max(0, d < 5 ? 3 : 0), '{}', daysAgo(d));
+  }
+
+  // Risk assessment
+  rawDb.prepare('INSERT INTO risk_assessments (id,user_id,score,level,factors_json,recommendations_json,created_at) VALUES (?,?,?,?,?,?,?)').run(uuidv4(), userId, 62, 'high', JSON.stringify([{label:'3 upcoming exams',weight:15,severity:'critical'},{label:'Average plan progress low: 35%',weight:12,severity:'high'}]), JSON.stringify(['Use the Schedule Optimizer','Focus on one subject per day']), daysAgo(1));
+
+  // Weekly performance
+  for (let w = 4; w >= 0; w--) {
+    db.recordWeeklyPerformance(userId, daysAgo(w * 7 + 6), { tasks_completed: 2 + w, tasks_total: 6 + w, study_events: 5 + w * 2, chat_sessions: 3 + w, risk_score: 50 + w * 5, productivity_score: 45 + w * 5 });
+  }
+
+  // Run engines
+  const patterns = patternEngine.computeAndSave(userId);
+  adaptiveEngine.computeAndSave(userId, patterns);
+  memoryEngine.computeAndSaveProfile(userId);
+  const prediction = predictionEngine.computeAndSave(userId, true);
+  const interventions = interventionEngine.generateInterventions(prediction);
+  db.saveInterventions(userId, interventions);
+}
 
 module.exports = router;

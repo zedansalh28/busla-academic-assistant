@@ -3,6 +3,7 @@ const { asyncHandler } = require('../utils/errorHandler');
 const { validateRequired } = require('../utils/validators');
 const db = require('../db/queries');
 const knowledgeBase = require('../utils/knowledgeBase');
+const { track } = require('../services/behaviorTracker');
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ const router = express.Router();
 router.post('/', asyncHandler(async (req, res) => {
   validateRequired(req.body, ['user_id', 'title', 'subject']);
   const plan = db.createStudyPlan(req.body.user_id, req.body);
+  track.planCreated(req.body.user_id);
   res.status(201).json(plan);
 }));
 
@@ -28,6 +30,10 @@ router.put('/tasks/:taskId', asyncHandler(async (req, res) => {
     return res.status(404).json({ error: 'Task not found' });
   }
   db.recalculatePlanProgress(task.plan_id);
+  if (req.body.status === 'completed') {
+    const plan = db.getPlan(task.plan_id);
+    track.taskCompleted(plan?.user_id, plan?.subject);
+  }
   res.json(task);
 }));
 

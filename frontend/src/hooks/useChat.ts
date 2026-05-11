@@ -40,8 +40,12 @@ export const useChat = (sessionId: string | null, userId: string | null) => {
         setMessages((prev) => [...prev, assistantMessage]);
 
         return response;
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to send message';
+      } catch (err: unknown) {
+        const axiosErr = err as { response?: { data?: { error?: string }; status?: number } };
+        const serverMsg = axiosErr?.response?.data?.error;
+        const status = axiosErr?.response?.status;
+        let message = err instanceof Error ? err.message : 'Failed to send message';
+        if (status === 503 && serverMsg) message = serverMsg;
         setError(message);
         return null;
       } finally {

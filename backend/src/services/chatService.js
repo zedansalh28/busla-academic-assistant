@@ -1,6 +1,10 @@
 const db = require('../db/queries');
 const llmClient = require('./llmClient');
 const knowledgeBase = require('../utils/knowledgeBase');
+const { track } = require('./behaviorTracker');
+const adaptiveEngine = require('./adaptiveEngine');
+const predictionEngine = require('./predictionEngine');
+const memoryEngine = require('./memoryEngine');
 
 const MAX_CONVERSATION_TURNS = parseInt(process.env.MAX_CONVERSATION_TURNS) || 20;
 const MAX_HISTORY_MESSAGES = MAX_CONVERSATION_TURNS * 2;
@@ -11,11 +15,26 @@ class ChatService {
       throw new Error('Message cannot be empty');
     }
 
+    // Track behavior event — async-safe, never throws
+    track.chatMessage(userId, userMessage);
+
     db.updateSessionActivity(sessionId);
     const history = db.getConversationHistory(sessionId);
     const profile = db.getProfile(userId);
     const relevantKnowledge = this.getRelevantKnowledge(userMessage, profile);
-    const systemPrompt = this.buildSystemPrompt(profile, relevantKnowledge);
+
+    // Load adaptive preferences to personalize response style
+    const adaptivePrefs = db.getAdaptivePrefs(userId);
+    const adaptiveContext = adaptiveEngine.buildChatAdaptiveContext(adaptivePrefs);
+
+    // Inject prediction-aware context for critical states (uses 30-min cache)
+    const prediction = predictionEngine.computeAndSave(userId);
+    const predictionContext = this.buildPredictionContext(prediction);
+
+    // Inject long-term academic memory (concept mastery, struggles, forgetting)
+    const memoryContext = memoryEngine.buildMemoryContext(userId);
+
+    const systemPrompt = this.buildSystemPrompt(profile, relevantKnowledge) + adaptiveContext + predictionContext + memoryContext;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -32,6 +51,11 @@ class ChatService {
       if (history.length + 2 > MAX_HISTORY_MESSAGES) {
         db.clearConversationHistory(sessionId);
       }
+
+      // Update concept mastery from this interaction (fire-and-forget)
+      try {
+        memoryEngine.updateConceptFromChat(userId, userMessage, response);
+      } catch (_) {}
 
       return {
         answer: response,
@@ -232,6 +256,18 @@ Help this ${yearName} ${major} student succeed at SCE. Be clear, be specific, be
     }
 
     return suggestions.slice(0, 2);
+  }
+
+  buildPredictionContext(prediction) {
+    if (!prediction) return '';
+    const { burnoutProbability = 0, failureRisk = 0, overallHealth = 'healthy' } = prediction;
+    if (overallHealth === 'critical' || burnoutProbability >= 70) {
+      return `\n\n⚠️ STUDENT ALERT — CRITICAL STATE: This student's academic health is critical (failure risk: ${failureRisk}%, burnout: ${burnoutProbability}%). Be supportive and concise. Avoid long explanations. Prioritize actionable steps. Do not overwhelm. If they seem distressed, acknowledge it briefly before answering.`;
+    }
+    if (overallHealth === 'at_risk' || failureRisk >= 40) {
+      return `\n\n📊 CONTEXT: This student is at academic risk (failure risk: ${failureRisk}%). Keep answers practical and focused. Recommend using the Optimizer or Planner where appropriate.`;
+    }
+    return '';
   }
 
   getSessionHistory(sessionId) {

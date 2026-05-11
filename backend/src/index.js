@@ -11,6 +11,12 @@ const plansRouter = require('./routes/plans');
 const recommendationsRouter = require('./routes/recommendations');
 const coursesRouter = require('./routes/courses');
 const demoRouter = require('./routes/demo');
+const authRouter = require('./routes/auth');
+const optimizerRouter = require('./routes/optimizer');
+const riskRouter = require('./routes/risk');
+const analyticsRouter = require('./routes/analytics');
+const predictionsRouter = require('./routes/predictions');
+const memoryRouter = require('./routes/memory');
 const { errorHandler } = require('./utils/errorHandler');
 
 const app = express();
@@ -33,6 +39,12 @@ app.use('/api/plans', plansRouter);
 app.use('/api/recommendations', recommendationsRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/demo', demoRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/optimizer', optimizerRouter);
+app.use('/api/risk', riskRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/predictions', predictionsRouter);
+app.use('/api/memory', memoryRouter);
 
 app.use(errorHandler);
 

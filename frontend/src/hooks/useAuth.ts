@@ -1,39 +1,54 @@
 import { useState, useEffect, useCallback } from 'react';
 import { sessionService } from '@/services/sessionService';
 import { profileService } from '@/services/profileService';
-import { User } from '@/types';
+import { authService } from '@/services/authService';
+import { User, AuthUser } from '@/types';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize or restore session
   useEffect(() => {
-    const initSession = async () => {
+    const init = async () => {
       try {
-        const stored = sessionService.getStoredSession();
-        if (stored.session_id && stored.user_id) {
-          setSessionId(stored.session_id);
+        const token = authService.getStoredToken();
+
+        if (token) {
+          // JWT-authenticated user
           try {
-            const profile = await profileService.getProfile(stored.user_id);
-            setUser(profile);
+            const { user: au, profile } = await authService.getMe();
+            setAuthUser(au);
+            if (profile) setUser(profile);
+            const stored = sessionService.getStoredSession();
+            setSessionId(stored.session_id);
           } catch {
-            // Profile doesn't exist yet, that's ok
+            // Token expired/invalid — clear and fall through to landing
+            authService.clearAuth();
           }
         } else {
-          const { session_id } = await sessionService.createSession();
-          setSessionId(session_id);
+          // Anonymous / demo flow
+          const stored = sessionService.getStoredSession();
+          if (stored.session_id && stored.user_id) {
+            setSessionId(stored.session_id);
+            try {
+              const profile = await profileService.getProfile(stored.user_id);
+              setUser(profile);
+            } catch {
+              // no profile yet
+            }
+          }
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to initialize session');
+        setError(err instanceof Error ? err.message : 'Failed to initialize');
       } finally {
         setLoading(false);
       }
     };
-
-    initSession();
+    init();
   }, []);
 
   const createProfile = useCallback(async (profileData: Omit<User, 'id'>) => {
@@ -71,19 +86,27 @@ export const useAuth = () => {
   }, [user]);
 
   const logout = useCallback(() => {
+    authService.clearAuth();
     sessionService.clearSession();
     setUser(null);
+    setAuthUser(null);
     setSessionId(null);
   }, []);
 
+  const isDemo = typeof window !== 'undefined'
+    ? localStorage.getItem(STORAGE_KEYS.IS_DEMO) === 'true'
+    : false;
+
   return {
     user,
+    authUser,
     sessionId,
     loading,
     error,
+    isDemo,
     createProfile,
     updateProfile,
     logout,
-    isAuthenticated: !!user,
+    isAuthenticated: !!(user || authUser),
   };
 };

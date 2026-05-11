@@ -2,6 +2,7 @@ const express = require('express');
 const { asyncHandler } = require('../utils/errorHandler');
 const { generateSessionId } = require('../utils/validators');
 const db = require('../db/queries');
+const { track } = require('../services/behaviorTracker');
 
 const router = express.Router();
 
@@ -9,6 +10,7 @@ const router = express.Router();
 router.post('/create', asyncHandler(async (req, res) => {
   const userId = db.createUser();
   const sessionId = db.createSession(userId);
+  track.login(userId);
 
   res.json({
     user_id: userId,

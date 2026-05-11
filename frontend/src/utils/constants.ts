@@ -3,6 +3,8 @@ export const STORAGE_KEYS = {
   SESSION_ID: 'busla_session_id',
   PROFILE: 'busla_profile',
   IS_DEMO: 'busla_is_demo',
+  TOKEN: 'busla_auth_token',
+  AUTH_USER: 'busla_auth_user',
 };
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';

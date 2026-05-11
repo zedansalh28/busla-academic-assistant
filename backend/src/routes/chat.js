@@ -19,7 +19,17 @@ router.post('/', asyncHandler(async (req, res) => {
     return res.status(404).json({ error: 'Session not found' });
   }
 
-  const response = await chatService.processMessage(session_id, user_id, message);
+  let response;
+  try {
+    response = await chatService.processMessage(session_id, user_id, message);
+  } catch (err) {
+    if (err.code === 'API_KEY_NOT_CONFIGURED' || err.code === 'API_KEY_INVALID') {
+      return res.status(503).json({
+        error: 'Chat service is not configured yet. Please set a valid COHERE_API_KEY in backend/.env and restart the server. Get a free key at https://dashboard.cohere.com',
+      });
+    }
+    throw err;
+  }
 
   res.json({
     session_id,

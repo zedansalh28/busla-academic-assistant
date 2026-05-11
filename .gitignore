@@ -59,3 +59,10 @@ __pycache__/
 .DS_Store
 backend/data/*.db
 backend/data/*.sqlite
+
+# Claude Code local settings (tool config, not project code)
+.claude/
+
+# TypeScript build artifacts
+*.tsbuildinfo
+tsconfig.tsbuildinfo

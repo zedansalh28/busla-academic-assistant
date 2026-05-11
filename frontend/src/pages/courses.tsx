@@ -23,6 +23,10 @@ export default function CoursesPage() {
     user?.id || null
   );
 
+  const handleClearChat = useCallback(() => {
+    if (selectedCourse) clearHistory(selectedCourse.id);
+  }, [selectedCourse, clearHistory]);
+
   React.useEffect(() => {
     if (!authLoading && !user) router.push('/');
   }, [user, authLoading, router]);
@@ -48,10 +52,6 @@ export default function CoursesPage() {
     if (!selectedCourse) return;
     await sendMessage(selectedCourse.id, content);
   };
-
-  const handleClearChat = useCallback(() => {
-    if (selectedCourse) clearHistory(selectedCourse.id);
-  }, [selectedCourse, clearHistory]);
 
   return (
     <DashboardLayout onLogout={logout} title="Course Library">
